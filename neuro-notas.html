@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠 NeuroNotas — Mi Diario de Neurociencia</title>
+<title>🐻 OsitoNotas</title>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -28,7 +28,6 @@
     overflow-x: hidden;
   }
 
-  /* Fondo animado con neuronas */
   body::before {
     content: '';
     position: fixed;
@@ -49,7 +48,35 @@
     z-index: 1;
   }
 
-  /* Header */
+  .lang-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    background: var(--tarjeta);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    border-radius: 30px;
+    overflow: hidden;
+  }
+
+  .lang-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: rgba(232, 224, 240, 0.5);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .lang-btn.activo {
+    background: linear-gradient(135deg, var(--violeta), var(--rosa));
+    color: white;
+  }
+
   .header {
     text-align: center;
     margin-bottom: 50px;
@@ -74,7 +101,6 @@
     font-style: italic;
   }
 
-  /* Formulario de nueva nota */
   .nueva-nota {
     background: var(--tarjeta);
     border: 1px solid rgba(192, 132, 252, 0.2);
@@ -91,9 +117,7 @@
     margin-bottom: 20px;
   }
 
-  .campo {
-    margin-bottom: 16px;
-  }
+  .campo { margin-bottom: 16px; }
 
   .campo label {
     display: block;
@@ -135,18 +159,9 @@
     background-position: right 16px center;
   }
 
-  .campo select option {
-    background: var(--tarjeta);
-    color: var(--texto);
-  }
+  .campo select option { background: var(--tarjeta); color: var(--texto); }
 
-  /* Colores para elegir */
-  .colores {
-    display: flex;
-    gap: 10px;
-    margin-top: 6px;
-    flex-wrap: wrap;
-  }
+  .colores { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
 
   .color-btn {
     width: 36px;
@@ -155,12 +170,9 @@
     border: 3px solid transparent;
     cursor: pointer;
     transition: all 0.3s;
-    position: relative;
   }
 
-  .color-btn:hover {
-    transform: scale(1.2);
-  }
+  .color-btn:hover { transform: scale(1.2); }
 
   .color-btn.activo {
     border-color: white;
@@ -187,11 +199,8 @@
     box-shadow: 0 8px 30px rgba(192, 132, 252, 0.3);
   }
 
-  .btn-guardar:active {
-    transform: translateY(0);
-  }
+  .btn-guardar:active { transform: translateY(0); }
 
-  /* Contador de notas */
   .contador {
     text-align: center;
     margin-bottom: 30px;
@@ -208,7 +217,6 @@
     color: var(--violeta);
   }
 
-  /* Grid de notas */
   .notas-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -229,15 +237,6 @@
   .nota-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  }
-
-  .nota-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
   }
 
   .nota-card .categoria {
@@ -284,12 +283,8 @@
     transition: all 0.3s;
   }
 
-  .btn-borrar:hover {
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
-  }
+  .btn-borrar:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
 
-  /* Mensaje vacío */
   .vacio {
     text-align: center;
     padding: 60px 20px;
@@ -302,12 +297,17 @@
     animation: float 3s ease-in-out infinite;
   }
 
-  .vacio p {
-    color: rgba(232, 224, 240, 0.4);
-    font-size: 1.1rem;
+  .vacio p { color: rgba(232, 224, 240, 0.4); font-size: 1.1rem; }
+
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 20px;
+    color: rgba(232, 224, 240, 0.25);
+    font-size: 0.8rem;
+    font-style: italic;
   }
 
-  /* Animaciones */
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -323,85 +323,150 @@
     50% { transform: translateY(-10px); }
   }
 
-  /* Responsive */
   @media (max-width: 600px) {
     .header h1 { font-size: 2.5rem; }
     .notas-grid { grid-template-columns: 1fr; }
     .container { padding: 20px 16px; }
+    .lang-toggle { top: 10px; right: 10px; }
   }
 </style>
 </head>
 <body>
 
+<div class="lang-toggle">
+  <button class="lang-btn activo" onclick="cambiarIdioma('es')">ES</button>
+  <button class="lang-btn" onclick="cambiarIdioma('en')">EN</button>
+</div>
+
 <div class="container">
   <header class="header">
-    <h1>🧠 NeuroNotas</h1>
-    <p>Mi diario de neurociencia — aprender, escribir, conectar</p>
+    <h1>🐻 OsitoNotas</h1>
+    <p id="subtitulo"></p>
   </header>
 
   <section class="nueva-nota">
-    <h2>✨ Nueva nota</h2>
-    
+    <h2 id="nuevaNotaTitulo"></h2>
     <div class="campo">
-      <label>Título</label>
-      <input type="text" id="titulo" placeholder="Ej: Cómo funciona la dopamina">
+      <label id="labelTitulo"></label>
+      <input type="text" id="titulo">
     </div>
-
     <div class="campo">
-      <label>Categoría</label>
-      <select id="categoria">
-        <option value="Neurociencia">🧠 Neurociencia</option>
-        <option value="Psicología">💭 Psicología</option>
-        <option value="Emociones">💗 Emociones</option>
-        <option value="Aprendizaje">📚 Aprendizaje</option>
-        <option value="Reflexión">🌙 Reflexión personal</option>
-        <option value="Idea">💡 Idea</option>
-      </select>
+      <label id="labelCategoria"></label>
+      <select id="categoria"></select>
     </div>
-
     <div class="campo">
-      <label>Tu nota</label>
-      <textarea id="contenido" placeholder="Escribí lo que aprendiste, lo que pensás, lo que sentís..."></textarea>
+      <label id="labelNota"></label>
+      <textarea id="contenido"></textarea>
     </div>
-
     <div class="campo">
-      <label>Color de la nota</label>
+      <label id="labelColor"></label>
       <div class="colores">
-        <button class="color-btn activo" style="background: var(--rosa); color: var(--rosa)" data-color="rosa" onclick="elegirColor(this)"></button>
-        <button class="color-btn" style="background: var(--violeta); color: var(--violeta)" data-color="violeta" onclick="elegirColor(this)"></button>
-        <button class="color-btn" style="background: var(--azul); color: var(--azul)" data-color="azul" onclick="elegirColor(this)"></button>
-        <button class="color-btn" style="background: var(--verde); color: var(--verde)" data-color="verde" onclick="elegirColor(this)"></button>
-        <button class="color-btn" style="background: var(--amarillo); color: var(--amarillo)" data-color="amarillo" onclick="elegirColor(this)"></button>
-        <button class="color-btn" style="background: var(--naranja); color: var(--naranja)" data-color="naranja" onclick="elegirColor(this)"></button>
+        <button class="color-btn activo" style="background:var(--rosa);color:var(--rosa)" data-color="rosa" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background:var(--violeta);color:var(--violeta)" data-color="violeta" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background:var(--azul);color:var(--azul)" data-color="azul" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background:var(--verde);color:var(--verde)" data-color="verde" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background:var(--amarillo);color:var(--amarillo)" data-color="amarillo" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background:var(--naranja);color:var(--naranja)" data-color="naranja" onclick="elegirColor(this)"></button>
       </div>
     </div>
-
-    <button class="btn-guardar" onclick="guardarNota()">Guardar nota 🐻</button>
+    <button class="btn-guardar" id="btnGuardar" onclick="guardarNota()"></button>
   </section>
 
   <div class="contador" id="contador"></div>
-
   <section class="notas-grid" id="notasGrid"></section>
+  <footer class="footer" id="footer"></footer>
 </div>
 
 <script>
-  const coloresCSS = {
-    rosa: '#FF6B9D',
-    violeta: '#C084FC',
-    azul: '#60A5FA',
-    verde: '#34D399',
-    amarillo: '#FBBF24',
-    naranja: '#FB923C'
+  const textos = {
+    es: {
+      subtitulo: 'Mi diario personal — aprender, escribir, conectar',
+      nuevaNota: '✨ Nueva nota',
+      labelTitulo: 'Título',
+      placeholderTitulo: 'Ej: Cómo funciona la dopamina',
+      labelCategoria: 'Categoría',
+      categorias: [
+        { value: 'Neurociencia', label: '🧠 Neurociencia' },
+        { value: 'Psicología', label: '💭 Psicología' },
+        { value: 'Emociones', label: '💗 Emociones' },
+        { value: 'Aprendizaje', label: '📚 Aprendizaje' },
+        { value: 'Reflexión', label: '🌙 Reflexión personal' },
+        { value: 'Idea', label: '💡 Idea' }
+      ],
+      labelNota: 'Tu nota',
+      placeholderNota: 'Escribí lo que aprendiste, lo que pensás, lo que sentís...',
+      labelColor: 'Color de la nota',
+      btnGuardar: 'Guardar nota 🐻',
+      contador: (n) => `🧠 ${n} nota${n !== 1 ? 's' : ''} en tu diario`,
+      vacio: 'Tu diario está vacío. ¡Escribí tu primera nota!',
+      borrarConfirm: '¿Borrar esta nota?',
+      alertaVacia: '¡Escribí un título y contenido para tu nota! 🧠',
+      footer: 'Hecha con curiosidad, mate, y un poco de valentía 🧉🧠🐻<br>Con el apoyo de Osito Radio 📻'
+    },
+    en: {
+      subtitulo: 'My personal journal — learn, write, connect',
+      nuevaNota: '✨ New note',
+      labelTitulo: 'Title',
+      placeholderTitulo: 'E.g.: How dopamine works',
+      labelCategoria: 'Category',
+      categorias: [
+        { value: 'Neurociencia', label: '🧠 Neuroscience' },
+        { value: 'Psicología', label: '💭 Psychology' },
+        { value: 'Emociones', label: '💗 Emotions' },
+        { value: 'Aprendizaje', label: '📚 Learning' },
+        { value: 'Reflexión', label: '🌙 Personal reflection' },
+        { value: 'Idea', label: '💡 Idea' }
+      ],
+      labelNota: 'Your note',
+      placeholderNota: 'Write what you learned, what you think, what you feel...',
+      labelColor: 'Note color',
+      btnGuardar: 'Save note 🐻',
+      contador: (n) => `🧠 ${n} note${n !== 1 ? 's' : ''} in your journal`,
+      vacio: 'Your journal is empty. Write your first note!',
+      borrarConfirm: 'Delete this note?',
+      alertaVacia: 'Write a title and content for your note! 🧠',
+      footer: 'Made with curiosity, mate, and a little bit of courage 🧉🧠🐻<br>With the support of Osito Radio 📻'
+    }
   };
 
+  let idioma = 'es';
+  const coloresCSS = {
+    rosa: '#FF6B9D', violeta: '#C084FC', azul: '#60A5FA',
+    verde: '#34D399', amarillo: '#FBBF24', naranja: '#FB923C'
+  };
   let colorSeleccionado = 'rosa';
   let notas = [];
 
-  // Cargar notas guardadas
   try {
-    const guardadas = localStorage.getItem('neuronotas');
+    const guardadas = localStorage.getItem('ositonotas');
     if (guardadas) notas = JSON.parse(guardadas);
   } catch(e) {}
+
+  function cambiarIdioma(lang) {
+    idioma = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('activo'));
+    event.target.classList.add('activo');
+    aplicarTextos();
+    renderNotas();
+  }
+
+  function aplicarTextos() {
+    const t = textos[idioma];
+    document.getElementById('subtitulo').textContent = t.subtitulo;
+    document.getElementById('nuevaNotaTitulo').textContent = t.nuevaNota;
+    document.getElementById('labelTitulo').textContent = t.labelTitulo;
+    document.getElementById('titulo').placeholder = t.placeholderTitulo;
+    document.getElementById('labelCategoria').textContent = t.labelCategoria;
+    document.getElementById('labelNota').textContent = t.labelNota;
+    document.getElementById('contenido').placeholder = t.placeholderNota;
+    document.getElementById('labelColor').textContent = t.labelColor;
+    document.getElementById('btnGuardar').textContent = t.btnGuardar;
+    document.getElementById('footer').innerHTML = t.footer;
+    const select = document.getElementById('categoria');
+    const val = select.value;
+    select.innerHTML = t.categorias.map(c => `<option value="${c.value}">${c.label}</option>`).join('');
+    if (val) select.value = val;
+  }
 
   function elegirColor(btn) {
     document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('activo'));
@@ -410,38 +475,26 @@
   }
 
   function guardarNota() {
+    const t = textos[idioma];
     const titulo = document.getElementById('titulo').value.trim();
     const categoria = document.getElementById('categoria').value;
     const contenido = document.getElementById('contenido').value.trim();
-
-    if (!titulo || !contenido) {
-      alert('¡Escribí un título y contenido para tu nota! 🧠');
-      return;
-    }
-
+    if (!titulo || !contenido) { alert(t.alertaVacia); return; }
     const nota = {
-      id: Date.now(),
-      titulo,
-      categoria,
-      contenido,
+      id: Date.now(), titulo, categoria, contenido,
       color: colorSeleccionado,
-      fecha: new Date().toLocaleDateString('es-AR', { 
-        day: 'numeric', month: 'long', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit' 
-      })
+      fecha: new Date().toLocaleDateString('es-AR', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' }),
+      fechaEN: new Date().toLocaleDateString('en-US', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })
     };
-
     notas.unshift(nota);
     guardarEnLocal();
     renderNotas();
-
-    // Limpiar formulario
     document.getElementById('titulo').value = '';
     document.getElementById('contenido').value = '';
   }
 
   function borrarNota(id) {
-    if (confirm('¿Borrar esta nota?')) {
+    if (confirm(textos[idioma].borrarConfirm)) {
       notas = notas.filter(n => n.id !== id);
       guardarEnLocal();
       renderNotas();
@@ -449,45 +502,36 @@
   }
 
   function guardarEnLocal() {
-    try {
-      localStorage.setItem('neuronotas', JSON.stringify(notas));
-    } catch(e) {}
+    try { localStorage.setItem('ositonotas', JSON.stringify(notas)); } catch(e) {}
+  }
+
+  function getCategoriaLabel(value) {
+    const cat = textos[idioma].categorias.find(c => c.value === value);
+    return cat ? cat.label : value;
   }
 
   function renderNotas() {
+    const t = textos[idioma];
     const grid = document.getElementById('notasGrid');
     const contador = document.getElementById('contador');
-
     if (notas.length === 0) {
       contador.innerHTML = '';
-      grid.innerHTML = `
-        <div class="vacio" style="grid-column: 1 / -1">
-          <div class="emoji">🧠</div>
-          <p>Tu diario está vacío. ¡Escribí tu primera nota!</p>
-        </div>
-      `;
+      grid.innerHTML = `<div class="vacio" style="grid-column:1/-1"><div class="emoji">🧠</div><p>${t.vacio}</p></div>`;
       return;
     }
-
-    contador.innerHTML = `<span>🧠 ${notas.length} nota${notas.length !== 1 ? 's' : ''} en tu diario</span>`;
-
+    contador.innerHTML = `<span>${t.contador(notas.length)}</span>`;
     grid.innerHTML = notas.map((nota, i) => `
-      <div class="nota-card" style="animation-delay: ${i * 0.08}s">
-        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${coloresCSS[nota.color]};border-radius:16px 16px 0 0;"></div>
-        <div class="categoria" style="color:${coloresCSS[nota.color]}">${nota.categoria}</div>
+      <div class="nota-card" style="animation-delay:${i*0.08}s">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${coloresCSS[nota.color]};border-radius:16px 16px 0 0"></div>
+        <div class="categoria" style="color:${coloresCSS[nota.color]}">${getCategoriaLabel(nota.categoria)}</div>
         <div class="titulo" style="color:${coloresCSS[nota.color]}">${nota.titulo}</div>
         <div class="contenido">${nota.contenido}</div>
-        <div class="fecha">
-          <span>${nota.fecha}</span>
-          <button class="btn-borrar" onclick="borrarNota(${nota.id})">🗑️</button>
-        </div>
-      </div>
-    `).join('');
+        <div class="fecha"><span>${idioma==='es'?nota.fecha:(nota.fechaEN||nota.fecha)}</span><button class="btn-borrar" onclick="borrarNota(${nota.id})">🗑️</button></div>
+      </div>`).join('');
   }
 
-  // Render inicial
+  aplicarTextos();
   renderNotas();
 </script>
-
 </body>
 </html>
