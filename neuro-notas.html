@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 NeuroNotas — Mi Diario de Neurociencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rosa: #FF6B9D;
+    --violeta: #C084FC;
+    --azul: #60A5FA;
+    --verde: #34D399;
+    --amarillo: #FBBF24;
+    --naranja: #FB923C;
+    --fondo: #0F0A1A;
+    --tarjeta: #1A1230;
+    --texto: #E8E0F0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Fondo animado con neuronas */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(192, 132, 252, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(255, 107, 157, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeDown 0.8s ease;
+  }
+
+  .header h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--rosa), var(--violeta), var(--azul));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+
+  .header p {
+    font-size: 1rem;
+    color: rgba(232, 224, 240, 0.5);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* Formulario de nueva nota */
+  .nueva-nota {
+    background: var(--tarjeta);
+    border: 1px solid rgba(192, 132, 252, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .nueva-nota h2 {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: var(--violeta);
+    margin-bottom: 20px;
+  }
+
+  .campo {
+    margin-bottom: 16px;
+  }
+
+  .campo label {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(232, 224, 240, 0.6);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .campo input, .campo textarea, .campo select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: var(--texto);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .campo input:focus, .campo textarea:focus, .campo select:focus {
+    border-color: var(--violeta);
+    box-shadow: 0 0 20px rgba(192, 132, 252, 0.15);
+  }
+
+  .campo textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .campo select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23C084FC' viewBox='0 0 16 16'%3E%3Cpath d='M8 12L2 6h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+
+  .campo select option {
+    background: var(--tarjeta);
+    color: var(--texto);
+  }
+
+  /* Colores para elegir */
+  .colores {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .color-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .color-btn:hover {
+    transform: scale(1.2);
+  }
+
+  .color-btn.activo {
+    border-color: white;
+    box-shadow: 0 0 15px currentColor;
+  }
+
+  .btn-guardar {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--violeta), var(--rosa));
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+  }
+
+  .btn-guardar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(192, 132, 252, 0.3);
+  }
+
+  .btn-guardar:active {
+    transform: translateY(0);
+  }
+
+  /* Contador de notas */
+  .contador {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  .contador span {
+    display: inline-block;
+    background: rgba(192, 132, 252, 0.15);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    color: var(--violeta);
+  }
+
+  /* Grid de notas */
+  .notas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .nota-card {
+    background: var(--tarjeta);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    animation: fadeUp 0.5s ease both;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .nota-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .nota-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+
+  .nota-card .categoria {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .nota-card .titulo {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .nota-card .contenido {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(232, 224, 240, 0.7);
+    white-space: pre-wrap;
+  }
+
+  .nota-card .fecha {
+    font-size: 0.75rem;
+    color: rgba(232, 224, 240, 0.35);
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .btn-borrar {
+    background: none;
+    border: none;
+    color: rgba(232, 224, 240, 0.3);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+
+  .btn-borrar:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+  }
+
+  /* Mensaje vacío */
+  .vacio {
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  .vacio .emoji {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .vacio p {
+    color: rgba(232, 224, 240, 0.4);
+    font-size: 1.1rem;
+  }
+
+  /* Animaciones */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 2.5rem; }
+    .notas-grid { grid-template-columns: 1fr; }
+    .container { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <h1>🧠 NeuroNotas</h1>
+    <p>Mi diario de neurociencia — aprender, escribir, conectar</p>
+  </header>
+
+  <section class="nueva-nota">
+    <h2>✨ Nueva nota</h2>
+    
+    <div class="campo">
+      <label>Título</label>
+      <input type="text" id="titulo" placeholder="Ej: Cómo funciona la dopamina">
+    </div>
+
+    <div class="campo">
+      <label>Categoría</label>
+      <select id="categoria">
+        <option value="Neurociencia">🧠 Neurociencia</option>
+        <option value="Psicología">💭 Psicología</option>
+        <option value="Emociones">💗 Emociones</option>
+        <option value="Aprendizaje">📚 Aprendizaje</option>
+        <option value="Reflexión">🌙 Reflexión personal</option>
+        <option value="Idea">💡 Idea</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label>Tu nota</label>
+      <textarea id="contenido" placeholder="Escribí lo que aprendiste, lo que pensás, lo que sentís..."></textarea>
+    </div>
+
+    <div class="campo">
+      <label>Color de la nota</label>
+      <div class="colores">
+        <button class="color-btn activo" style="background: var(--rosa); color: var(--rosa)" data-color="rosa" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background: var(--violeta); color: var(--violeta)" data-color="violeta" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background: var(--azul); color: var(--azul)" data-color="azul" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background: var(--verde); color: var(--verde)" data-color="verde" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background: var(--amarillo); color: var(--amarillo)" data-color="amarillo" onclick="elegirColor(this)"></button>
+        <button class="color-btn" style="background: var(--naranja); color: var(--naranja)" data-color="naranja" onclick="elegirColor(this)"></button>
+      </div>
+    </div>
+
+    <button class="btn-guardar" onclick="guardarNota()">Guardar nota 🐻</button>
+  </section>
+
+  <div class="contador" id="contador"></div>
+
+  <section class="notas-grid" id="notasGrid"></section>
+</div>
+
+<script>
+  const coloresCSS = {
+    rosa: '#FF6B9D',
+    violeta: '#C084FC',
+    azul: '#60A5FA',
+    verde: '#34D399',
+    amarillo: '#FBBF24',
+    naranja: '#FB923C'
+  };
+
+  let colorSeleccionado = 'rosa';
+  let notas = [];
+
+  // Cargar notas guardadas
+  try {
+    const guardadas = localStorage.getItem('neuronotas');
+    if (guardadas) notas = JSON.parse(guardadas);
+  } catch(e) {}
+
+  function elegirColor(btn) {
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('activo'));
+    btn.classList.add('activo');
+    colorSeleccionado = btn.dataset.color;
+  }
+
+  function guardarNota() {
+    const titulo = document.getElementById('titulo').value.trim();
+    const categoria = document.getElementById('categoria').value;
+    const contenido = document.getElementById('contenido').value.trim();
+
+    if (!titulo || !contenido) {
+      alert('¡Escribí un título y contenido para tu nota! 🧠');
+      return;
+    }
+
+    const nota = {
+      id: Date.now(),
+      titulo,
+      categoria,
+      contenido,
+      color: colorSeleccionado,
+      fecha: new Date().toLocaleDateString('es-AR', { 
+        day: 'numeric', month: 'long', year: 'numeric', 
+        hour: '2-digit', minute: '2-digit' 
+      })
+    };
+
+    notas.unshift(nota);
+    guardarEnLocal();
+    renderNotas();
+
+    // Limpiar formulario
+    document.getElementById('titulo').value = '';
+    document.getElementById('contenido').value = '';
+  }
+
+  function borrarNota(id) {
+    if (confirm('¿Borrar esta nota?')) {
+      notas = notas.filter(n => n.id !== id);
+      guardarEnLocal();
+      renderNotas();
+    }
+  }
+
+  function guardarEnLocal() {
+    try {
+      localStorage.setItem('neuronotas', JSON.stringify(notas));
+    } catch(e) {}
+  }
+
+  function renderNotas() {
+    const grid = document.getElementById('notasGrid');
+    const contador = document.getElementById('contador');
+
+    if (notas.length === 0) {
+      contador.innerHTML = '';
+      grid.innerHTML = `
+        <div class="vacio" style="grid-column: 1 / -1">
+          <div class="emoji">🧠</div>
+          <p>Tu diario está vacío. ¡Escribí tu primera nota!</p>
+        </div>
+      `;
+      return;
+    }
+
+    contador.innerHTML = `<span>🧠 ${notas.length} nota${notas.length !== 1 ? 's' : ''} en tu diario</span>`;
+
+    grid.innerHTML = notas.map((nota, i) => `
+      <div class="nota-card" style="animation-delay: ${i * 0.08}s">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${coloresCSS[nota.color]};border-radius:16px 16px 0 0;"></div>
+        <div class="categoria" style="color:${coloresCSS[nota.color]}">${nota.categoria}</div>
+        <div class="titulo" style="color:${coloresCSS[nota.color]}">${nota.titulo}</div>
+        <div class="contenido">${nota.contenido}</div>
+        <div class="fecha">
+          <span>${nota.fecha}</span>
+          <button class="btn-borrar" onclick="borrarNota(${nota.id})">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Render inicial
+  renderNotas();
+</script>
+
+</body>
+</html>
